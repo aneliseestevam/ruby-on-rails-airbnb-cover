@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:17.0
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: app_development
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    command: ["rails", "s", "-b", "0.0.0.0"]
+    depends_on:
+      - db
